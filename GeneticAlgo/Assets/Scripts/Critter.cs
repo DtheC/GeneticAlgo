@@ -12,7 +12,7 @@ public class Critter : MonoBehaviour {
 	private float _closestEnemyDegreesNormalised = 0f;
 
 	//Movement
-	private float _movementDirectionDegreesNormalised = 0f;
+	private float _movementDirectionDegreesNormalised = 0.00f;
 
 	void Start () {
 		brain = new NeuralNetwork ();
@@ -21,6 +21,9 @@ public class Critter : MonoBehaviour {
 		brain.Initialise (3, 12, 1);
 		brain.SetLearningRate (0.2f);
 		brain.SetMomentum (true, 0.9f);
+
+
+		_movementDirectionDegreesNormalised = Random.Range (0.00f, 1.00f);
 	}
 
 	void Update () {
@@ -29,13 +32,23 @@ public class Critter : MonoBehaviour {
 		_inputs [0] = _movementDirectionDegreesNormalised;
 		_inputs [1] = System.Convert.ToSingle(_canSeeEnemy);
 		_inputs [2] = _closestEnemyDegreesNormalised;
+
+		if (Input.GetKey("left")){
+			_movementDirectionDegreesNormalised -= 0.01f;
+		}
+
+		if (Input.GetKey("right")){
+			_movementDirectionDegreesNormalised += 0.01f;
+		}
+
 		Move ();
 	}
 
 	void Move(){
 		transform.gameObject.GetComponent<Rigidbody> ().velocity =transform.up;
-		transform.RotateAround (transform.position, transform.up, _movementDirectionDegreesNormalised * 360);
-//		_movementDirectionDegreesNormalised = Random.Range (0f, 1.00f);
+		transform.RotateAround (transform.position, new Vector3(0f,1f,0f), _movementDirectionDegreesNormalised-0.5f);
+		Debug.Log (_movementDirectionDegreesNormalised);
+//		_movementDirectionDegreesNormalised = Random.Range (0.00f, 1.00f);
 //		transform.gameObject.GetComponent<Rigidbody> ().MoveRotation(Quaternion.AngleAxis (_movementDirectionDegreesNormalised * 360, transform.right));
 			
 
