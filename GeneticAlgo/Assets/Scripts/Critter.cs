@@ -41,17 +41,21 @@ public class Critter : MonoBehaviour {
 			_movementDirectionDegreesNormalised += 0.01f;
 		}
 
+		SetBrainInputs ();
+		brain.FeedForward ();
+		_movementDirectionDegreesNormalised = brain.GetOutput (0);
 		Move ();
+	}
+
+	void SetBrainInputs(){
+		for (int i = 0; i < _inputs.Length; i++) {
+			brain.SetInput (i, _inputs[i]);
+		}
 	}
 
 	void Move(){
 		transform.gameObject.GetComponent<Rigidbody> ().velocity =transform.up;
 		transform.RotateAround (transform.position, new Vector3(0f,1f,0f), _movementDirectionDegreesNormalised-0.5f);
-		Debug.Log (_movementDirectionDegreesNormalised);
-//		_movementDirectionDegreesNormalised = Random.Range (0.00f, 1.00f);
-//		transform.gameObject.GetComponent<Rigidbody> ().MoveRotation(Quaternion.AngleAxis (_movementDirectionDegreesNormalised * 360, transform.right));
-			
-
 	}
 
 	void FindClosestEnemy(){
@@ -76,7 +80,7 @@ public class Critter : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision collision) {
-		//Die on hit
+
 	}
 	
 	public float EnemyPositionToNormalisedDegrees(Vector3 EnemyPosition){
