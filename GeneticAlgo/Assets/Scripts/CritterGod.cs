@@ -17,10 +17,13 @@ public class CritterGod : MonoBehaviour {
 			critters.Add(c);
 		}
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
 	
+	}
+
+	public void RemoveCritter(GameObject CritterToRemove){
+
 	}
 
 
